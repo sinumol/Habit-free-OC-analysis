@@ -1,0 +1,90 @@
+#!/usr/bin/env nextflow
+/*
+ * Somatic Variant Calling Pipeline (Mutect2)
+ * Author: Sinumol George
+ * Created: 12-05-2023
+ * Version: 1.1
+ *
+ * Supports:
+ *  - Panel of Normals (PoN)
+ *  - FFPE contamination-aware filtering
+ */
+
+nextflow.enable.dsl = 2
+
+params.tumor_bam   = ""
+params.normal_bam  = ""
+params.reference   = ""
+params.pon_vcf     = ""
+params.common_vcf  = ""
+params.sample_id   = "sample1"
+params.ffpe        = false
+params.output_dir  = "results"
+params.threads     = 8
+
+process MUTECT2_CALL {
+
+    tag "${params.sample_id}"
+    publishDir "${params.output_dir}/mutect2", mode: 'copy'
+
+    input:
+    path tumor_bam
+    path normal_bam
+    path reference
+    path pon_vcf
+    path common_vcf
+
+    output:
+    path "final_mutect2.vcf.gz"
+
+    script:
+    """
+    echo "Running Mutect2..."
+
+    gatk Mutect2 \
+        -R ${reference} \
+        -I ${tumor_bam} \
+        -tumor ${params.sample_id}_T \
+        -I ${normal_bam} \
+        -normal ${params.sample_id}_N \
+        --panel-of-normals ${pon_vcf} \
+        --germline-resource ${common_vcf} \
+        -O unfiltered.vcf.gz
+
+    if [ "${params.ffpe}" = "true" ]; then
+        echo "FFPE sample detected: applying contamination filter"
+
+        gatk GetPileupSummaries \
+            -I ${tumor_bam} \
+            -V ${common_vcf} \
+            -L ${common_vcf} \
+            -O pileups.table
+
+        gatk CalculateContamination \
+            -I pileups.table \
+            -O contamination.table
+
+        gatk FilterMutectCalls \
+            -V unfiltered.vcf.gz \
+            --contamination-table contamination.table \
+            -O final_mutect2.vcf.gz
+    else
+        echo "Non-FFPE sample: standard filtering"
+
+        gatk FilterMutectCalls \
+            -V unfiltered.vcf.gz \
+            -O final_mutect2.vcf.gz
+    fi
+    """
+}
+
+workflow {
+
+    MUTECT2_CALL(
+        file(params.tumor_bam),
+        file(params.normal_bam),
+        file(params.reference),
+        file(params.pon_vcf),
+        file(params.common_vcf)
+    )
+}
