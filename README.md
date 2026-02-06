@@ -12,13 +12,39 @@ Codes used for the manuscript titled "Genomic landscape of oral squamous cell ca
 - Somatic variant calling (GATK Mutect2, Tumor only with PoN)
 - Variant annotation (ANNOVAR )
 - Downstream analyses (TMB, COSMIC signatures, Survival analysis)
+## Somatic Variant Calling Pipeline (Mutect2)
+
+This repository contains a reproducible GATK Mutect2-based pipeline
+for somatic variant calling in tumor-only samples.
+
+### Features
+- Tumor-only mode
+- Panel of Normals (PoN)
+- Germline resource filtering
+- Conditional FFPE artifact correction
+  - Orientation bias modeling
+  - Contamination estimation
+- Suitable for WES and targeted panels
+
+### FFPE Handling
+For FFPE samples, the pipeline performs:
+- LearnReadOrientationModel
+- CalculateContamination
+- FilterMutectCalls with orientation bias priors
+
+For non-FFPE samples, orientation bias correction is skipped.
+
+### Requirements
+- GATK ≥ 4.2
+- Bash
+- Reference genome (hg38/hg19)
+- Panel of Normals VCF
 
 ## RNA-seq Analysis Pipeline 
 
 - Normalization and differential expression (DESeq2)
 - Functional enrichment (GO, GSEA, pathway analysis)
 - Visualization (PCA, heatmaps, volcano plots)
-
 
 
 ## Repository Structure
@@ -36,9 +62,6 @@ Codes used for the manuscript titled "Genomic landscape of oral squamous cell ca
   
 - **SECURITY.md**  
   Guidelines for secure data handling and compliance.
-
-
-
 
 ## Getting Started
 1. Clone the repository:
