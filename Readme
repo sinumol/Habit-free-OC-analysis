@@ -1,7 +1,7 @@
 # Habit-free-OC_Analysis_APJCP
 
 ## Overview
-This repository contains bioinformatics workflows and scripts developed for the integrative analysis of ovarian cancer (OC). The project focuses on molecular subtyping, RNA sequencing, and somatic variant calling, with an emphasis on reproducibility and security. The analyses are designed to support translational research and publication in the *Asian Pacific Journal of Cancer Prevention (APJCP)*.
+This repository contains bioinformatics workflows used for TCGA habit-free oral cancer data analysis for the publication " The project focuses on molecular subtyping, RNA sequencing, and somatic variant calling, with an emphasis on reproducibility and security. The analyses are designed to support translational research and publication in the *Asian Pacific Journal of Cancer Prevention (APJCP)*.
 
 ## Objectives
 - Perform **molecular subtyping** of ovarian cancer samples using transcriptomic data.
