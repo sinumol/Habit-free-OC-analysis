@@ -69,7 +69,7 @@ For non-FFPE samples, orientation bias correction is skipped.
 ## Getting Started
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/Habit-free-OC_Analysis_APJCP.git
+   git clone https://github.com/sinumol/Habit-free-OC_Analysis_APJCP.git
 
 Citation
 If you use this pipeline, please cite: Sinumol George et al., [Asian Pacific Journal of Cancer Prevention, 2026]
