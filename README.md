@@ -3,7 +3,7 @@ Codes used for the manuscript titled "Genomic landscape of oral squamous cell ca
 ##TCGA processed dataset and NCBI RAW datset was used for the analysis.
 
 ## Objectives
-- somatic variant analysis using Maftools in R bioconductore
+- somatic variant analysis using Maftools in R bioconductor
 - somatic variant calling pipelines** (Mutect2) for mutation profiling.
 - Perform **molecular subtyping** of oral cancer samples using transcriptomic data.
 - Conduct **RNA-seq analysis** for differential expression and pathway enrichment.
